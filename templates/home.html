@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title> My Amazon</title>
+    <h1>Welcome to My Amazon!</h1>
+  </head>
+  <body>
+  <h2> This has been built by me, Nikhil Ballal </h2>
+  <ol> <p><a href = "/about">About Us</a</p>
+  </ol>
+  <form action = "/login" method = "POST" id = "form1">
+  <input type = "text" name = "username"> <br>
+  <input type = "password" name = "password">
+  </form>
+  <button type = "submit" form = "form1" value = "Submit">Submit</button>  <!-- we use 'id' so that we can link the button to the correct forms -->
+  {% if session['username'] %}
+  <p>{{ session['username'] }}</p>
+  {% else %}
+  <p>guest user</p>
+  {% endif %}
+  </body>
+</html>
