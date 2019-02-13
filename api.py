@@ -1,5 +1,5 @@
 from flask import Flask,render_template,request,redirect,session, url_for
-from model import check_user, create_user,log_user,check_product,create_product,get_products
+from model import check_user, create_user,log_user,check_product,create_product,get_products,seller_products
 app = Flask(__name__) # we are including all the properties of Flask into the app
 app.config['SECRET_KEY']='hello' #for session to work, we need secret_key
 
@@ -21,7 +21,7 @@ def login():
     if request.method == 'POST': # "POimport pdb; pdb.set_trace()ST" - typing it out on a form. "GET" clicking a link on the page or putting link on address bar.
         uname = request.form['username']
         password = request.form['password']
-        result = log_user(uname)
+        result = log_user(uname) #result will store the username entered however will contain the info i.e username, password, custtype and email of the entry used in 'log_user'
 
         if password==result['password']:
             session['username'] = result['username']
@@ -78,8 +78,12 @@ def add_product():
 @app.route("/productslist")
 def getprod():
     products = get_products()
-    print(products)
     return render_template("products.html", products = products)
+
+@app.route("/yourproducts")
+def yourproduct():
+    prods = seller_products(session["username"])
+    return render_template("products.html" , prods = prods )
 
 
 

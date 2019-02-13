@@ -5,6 +5,7 @@
     <title></title>
   </head>
   <body>
+  {% if session["c_type"] == "buyer" %}
   <p> list of products to purchase: </p>
   <p>{{ session['username'] }}</p>
   {% for product in products %}
@@ -14,5 +15,14 @@
     <li>{{ product["cost"] }}</li>
   </ul>
   {% endfor %}
+  {% else %}
+  {% for prod in prods %}
+  <ul>
+    <li>{{ prod["productsname"] }}</li>
+    <li>{{ prod["description"] }}</li>
+    <li>{{ prod["cost"] }}</li>
+  </ul>
+  {% endfor %}
+  {% endif %}
   </body>
 </html>
