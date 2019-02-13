@@ -1,42 +1,91 @@
-from flask import Flask,render_template, request,redirect,session, url_for
+from flask import Flask,render_template,request,redirect,session, url_for
+from model import check_user, create_user,log_user,check_product,create_product,get_products
 app = Flask(__name__) # we are including all the properties of Flask into the app
-app.config['SECRET_KEY']='hello'
-
-@app.route("/")
-def hello():
-    return "Hello World!"
+app.config['SECRET_KEY']='hello' #for session to work, we need secret_key
 
 @app.route("/about")
 def about():
     return render_template("about.html")
 
+@app.route("/")
 @app.route("/home")
 def home():
-    if session.get('username'):
-        return render_template('home.html',user = session['username'])
-    else:
-        return render_template('home.html')
+    return render_template('home.html')
+
+@app.route('/welcome')
+def welcome():
+    return render_template('welcome.html')
 
 @app.route("/login", methods = ["GET","POST"]) #if 'get' is not mentioned wont allow page to go back to 'home'
 def login():
-    if request.method == 'POST':
-        vishak = {'uname': 'vishak', 'password': '12345'}
-
-
+    if request.method == 'POST': # "POimport pdb; pdb.set_trace()ST" - typing it out on a form. "GET" clicking a link on the page or putting link on address bar.
         uname = request.form['username']
         password = request.form['password']
+        result = log_user(uname)
 
-        if vishak['uname'] == uname and vishak['password'] == password:
-            session['username'] = uname
-            session['password'] = password
+        if password==result['password']:
+            session['username'] = result['username']
+            session['c_type'] = result['c_type']
+            return redirect(url_for('welcome'))
+        return "enter correct password"
+
+    return redirect(url_for('home')) # if not POST, return to home page.
+
+@app.route("/signup", methods = ['GET','POST'])
+def signup():
+    if request.method == 'POST':
+
+        user_info= {} #creating a dictionary to pass the below code into database - users
+
+        user_info['username'] = request.form['username']
+        user_info['email'] = request.form['email']
+        user_info['password'] = request.form['password']
+        rpassword = request.form['rpassword']
+        user_info['c_type'] = request.form['type']
 
 
-    #return render_template("home.html")
-    return redirect(url_for('home')) # from def home()
+
+        if check_user(user_info['username']) is False:
+            if rpassword == user_info['password']:
+                create_user(user_info) #we are passing the dictionary into the function 'create_user'
+            else:
+                return "passwords do not match , please provide correct password"
+        else:
+            return "user already exists"
+
+    return redirect(url_for('home'))
+
+@app.route("/addproduct", methods=['GET','POST'])
+def add_product():
+
+    if request.method == 'POST':
+
+        product_info={}
+
+        product_info['productsname'] = request.form['productsname']
+        product_info['description'] = request.form['description']
+        product_info['cost'] = int(request.form['cost']) # storing the cost as int in key of dictionary
+        product_info['seller_name'] = session['username']
+
+        if check_product(product_info['productsname']) is False:
+            create_product(product_info) #this you will find in model.py
+            return "your product has been added"
+        else:
+            return "type another product"
+
+    return redirect(url_for('welcome'))
+
+@app.route("/productslist")
+def getprod():
+    products = get_products()
+    print(products)
+    return render_template("products.html", products = products)
+
+
 
 @app.route('/logout')
 def logout():
-    session.pop('username')
+    session.clear()
     return redirect(url_for('home'))
 
 if(__name__) == '__main__':

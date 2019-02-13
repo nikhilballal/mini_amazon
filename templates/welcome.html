@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title> Products </title>
+    <h1>Welcome to Amazon Products!</h1>
+  </head>
+  <body>
+  <h2> This has been built by Nikhil Ballal </h2>
+  {% if session['username'] %}  <!-- if logged in to session with username-->
+  <p>{{ session['username'] }}</p>
+  {% else %}
+  <p>guest user</p>
+  {% endif %}
+  {% if session['c_type'] == "seller" %}  <!-- if logged in to session with username-->
+    <form action = "/addproduct" method = "POST" id = "form"> <!-- we use 'id' so that we can link the button to the correct forms -->
+    <input type = "text" name = "productsname" placeholder = "product name..."> <br>
+    <input type = "text" name = "description" placeholder  = "description..."><br>
+    <input type = "text" name = "cost" placeholder = "cost..."><br>
+    </form>
+    <button type = "submit" form = "form" value = "Submit">Submit</button>
+    <br><br>
+
+    {% else %}
+
+  <p><a href="/productslist">Click here</a> to go to products page and buy some products</p>
+
+  {% endif %}
+  <a href = "/logout">Logout</a>
+  </body>

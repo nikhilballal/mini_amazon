@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+  <p> list of products to purchase: </p>
+  <p>{{ session['username'] }}</p>
+  {% for product in products %}
+  <ul>
+    <li>{{ product["productsname"] }}</li>
+    <li>{{ product["description"] }}</li>
+    <li>{{ product["cost"] }}</li>
+  </ul>
+  {% endfor %}
+  </body>
+</html>

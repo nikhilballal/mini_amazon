@@ -6,18 +6,36 @@
     <h1>Welcome to My Amazon!</h1>
   </head>
   <body>
-  <h2> This has been built by me, Nikhil Ballal </h2>
-  <ol> <p><a href = "/about">About Us</a</p>
-  </ol>
-  <form action = "/login" method = "POST" id = "form1">
-  <input type = "text" name = "username"> <br>
-  <input type = "password" name = "password">
-  </form>
-  <button type = "submit" form = "form1" value = "Submit">Submit</button>  <!-- we use 'id' so that we can link the button to the correct forms -->
-  {% if session['username'] %}
+  <h2> This has been built by Nikhil Ballal </h2>
+  {% if session['username'] %}  <!-- if logged in to session with username-->
   <p>{{ session['username'] }}</p>
   {% else %}
   <p>guest user</p>
   {% endif %}
+  {% if not session['username'] %}
+  <form action = "/signup" method = "POST" id = "form2"> <!-- we use 'id' so that we can link the button to the correct forms -->
+    <input type = "text" name = "username" placeholder = "username"> <br>
+    <input type = "password" name = "password" placeholder  = "password"><br>
+    <input type = "password" name = "rpassword" placeholder = "re-enter password"><br>
+    <input type = "text" name = "email" placeholder = "email">
+    <input type = "radio" name= "type" value = "buyer"> Buyer
+    <input type = "radio" name = "type" value = "seller"> Seller <br>
+    </form>
+    <button type = "submit" form = "form2" value = "Submit">Submit</button>
+    <br><br>
+
+  SIGN IN, if you have already SIGNED UP
+ <!-- so that we dont want the username and password tabs to appear when logged in -->
+  <form action = "/login" method = "POST" id = "form1"> <!-- we use 'id' so that we can link the button to the correct forms -->
+  <input type = "text" name = "username" placeholder = "username"> <br>
+  <input type = "password" name = "password" placeholder = "password">
+  </form>
+  <button type = "submit" form = "form1" value = "Submit">Submit</button>
+  <br>
+  {% else %}
+  <a href = "/logout">Logout</a> <!-- then show 'logout' link-->
+  {% endif %}
+
+
   </body>
 </html>
