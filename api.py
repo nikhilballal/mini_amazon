@@ -18,7 +18,7 @@ def welcome():
 
 @app.route("/login", methods = ["GET","POST"]) #if 'get' is not mentioned wont allow page to go back to 'home'
 def login():
-    if request.method == 'POST': # "POimport pdb; pdb.set_trace()ST" - typing it out on a form. "GET" clicking a link on the page or putting link on address bar.
+    if request.method == 'POST': # "POST" - typing it out on a form. "GET" clicking a link on the page or putting link on address bar.
         uname = request.form['username']
         password = request.form['password']
         result = log_user(uname) #result will store the username entered however will contain the info i.e username, password, custtype and email of the entry used in 'log_user'
@@ -53,7 +53,7 @@ def signup():
         else:
             return "user already exists"
 
-    return redirect(url_for('home'))
+    return render_template("register.html")
 
 @app.route("/addproduct", methods=['GET','POST'])
 def add_product():

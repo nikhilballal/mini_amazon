@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>My Amazon Registration</title>
+    <h2>Sign up and submit for registration </h2>
+  </head>
+  <body>
+    {% if not session['username'] %}
+    <form action = "/signup" method = "POST" id = "form"> <!-- we use 'id' so that we can link the button to the correct forms -->
+    <input type = "text" name = "username" placeholder = "username"> <br>
+    <input type = "password" name = "password" placeholder  = "password"><br>
+    <input type = "password" name = "rpassword" placeholder = "re-enter password"><br>
+    <input type = "text" name = "email" placeholder = "email">
+    <input type = "radio" name= "type" value = "buyer"> Buyer
+    <input type = "radio" name = "type" value = "seller"> Seller <br>
+    </form>
+    <p><button type = "submit" form = "form" value = "Submit">Submit</button></p>
+    <br><br>
+    {% endif %}
+  </body>
+</html>
