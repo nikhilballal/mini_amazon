@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
+{% extends 'base.html' %}
   </head>
+  {% block body %}
   <body>
   {% if session["c_type"] == "buyer" %}
   <p> list of products to purchase: </p>
@@ -14,9 +11,14 @@
     <li>{{ product["description"] }}</li>
     <li>{{ product["cost"] }}</li>
   </ul>
+  <li><b> sold by </b> : {{ product["seller_name"]}}</li></br>
+  <form action = "/add_cart" method = "POST">
+  <input type = "hidden" name= "product_id" value="{{product['_id']}}">
+  <input type = "submit" name = "submit" value="buy">
+  </form>
   {% endfor %}
   {% else %}
-  {% for prod in prods %}
+  {% for prod in prods %}   <!--looping for seller products -->
   <ul>
     <li>{{ prod["productsname"] }}</li>
     <li>{{ prod["description"] }}</li>
@@ -25,4 +27,5 @@
   {% endfor %}
   {% endif %}
   </body>
+  {% endblock body %}
 </html>

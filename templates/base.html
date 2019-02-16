@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title> My Amazon </title>
+  </head>
+  <body>
+    {% block body %} {% endblock body %}
+
+    {% if session %}
+
+    <br><a href= "/logout"> Logout </a>
+
+    {% endif %}
+
+  </body>
+</html>

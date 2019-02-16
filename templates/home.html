@@ -1,8 +1,10 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title> My Amazon</title>
+{% extends 'base.html' %}
+  {% block body %}
+   <style>
+    div.b{
+         text-align: center;}
+   </style>
+   <div class = "b">
     <h1>Welcome to My Amazon!</h1>
   </head>
   <body>
@@ -19,12 +21,23 @@
   <form action = "/login" method = "POST" id = "match"> <!-- we use 'id' so that we can link the button to the correct forms -->
   <input type = "text" name = "username" placeholder = "username"> <br>
   <input type = "password" name = "password" placeholder = "password">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for category, message in messages %}
+      <li class="{{ category }}">{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
   </form>
   <p><button type = "submit" form = "match" value = "Submit">Submit</button></p>
   <br>
   {% else %}
   <a href = "/logout">Logout</a> <!-- then show 'logout' link-->
   {% endif %}
-  <p> <a href = "/signup"> CLICK HERE </a> &nbsp if new user </p>
+  <p> Haven't registered yet? <a href = "/signup">&nbspCLICK HERE </a> </p>
+  </div>
   </body>
-</html>
+  {% endblock body %}
+  </html>

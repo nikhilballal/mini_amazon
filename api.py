@@ -1,5 +1,5 @@
-from flask import Flask,render_template,request,redirect,session, url_for
-from model import check_user, create_user,log_user,check_product,create_product,get_products,seller_products
+from flask import Flask,render_template,request,redirect,session, url_for, flash
+from model import check_user, create_user,log_user,check_product,create_product,get_products,seller_products,update_cart
 app = Flask(__name__) # we are including all the properties of Flask into the app
 app.config['SECRET_KEY']='hello' #for session to work, we need secret_key
 
@@ -27,7 +27,8 @@ def login():
             session['username'] = result['username']
             session['c_type'] = result['c_type']
             return redirect(url_for('welcome'))
-        return "enter correct password"
+        flash ("enter correct password")
+        return redirect(url_for('home'))
 
     return redirect(url_for('home')) # if not POST, return to home page.
 
@@ -49,7 +50,8 @@ def signup():
             if rpassword == user_info['password']:
                 create_user(user_info) #we are passing the dictionary into the function 'create_user'
             else:
-                return "passwords do not match , please provide correct password"
+                flash("passwords do not match , please provide correct password")
+                return render_template("register.html")
         else:
             return "user already exists"
 
@@ -84,6 +86,12 @@ def getprod():
 def yourproduct():
     prods = seller_products(session["username"])
     return render_template("products.html" , prods = prods )
+
+@app.route('/add_cart', methods = ['POST'])
+def add_cart():
+    product_id = request.form['product_id']
+    update_cart(session["username"], product_id)
+    return redirect(url_for('welcome'))
 
 
 

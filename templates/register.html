@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>My Amazon Registration</title>
+    <title>My Amazon</title>
     <h2>Sign up and submit for registration </h2>
   </head>
   <body>
@@ -14,6 +14,15 @@
     <input type = "text" name = "email" placeholder = "email">
     <input type = "radio" name= "type" value = "buyer"> Buyer
     <input type = "radio" name = "type" value = "seller"> Seller <br>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <ul class=flashes>
+      {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
     </form>
     <p><button type = "submit" form = "form" value = "Submit">Submit</button></p>
     <br><br>

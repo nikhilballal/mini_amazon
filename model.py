@@ -21,12 +21,13 @@ def log_user(username):
 
 def check_product(name):
 
-    query = {"productsname": name}  #creating a dict to do a query into the database
-    results = db['products'].find(query) # find returns pointer object
+    query = {"productsname": name}  # query is to check what is passed as productsname in the db
+    results = db['products'].find(query) # return query and store the results pertaining to the query.
 
     if results.count()>0:
         return True
     return False
+
 
 def create_product(x):
     db['products'].insert_one(x) #inserting the dictionary in the function to the database
@@ -34,7 +35,10 @@ def create_product(x):
 def get_products():
     return db['products'].find({}) #find fetches the data
 
-def seller_products(username):
-    query = {"seller_name": username}
+def seller_products(name):
+    query = {"seller_name": name}
     results = db['products'].find(query)
     return results
+
+def update_cart(username,product_id):
+    
