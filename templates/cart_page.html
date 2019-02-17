@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<h1> My Cart </h1>
+
+    {% for product in products %}
+    <ul>
+      <li>{{product['productsname']}} </li>
+      <li>{{product['description']}}</li>
+      <li>{{product['cost']}}</li>
+    </ul>
+    {% endfor %}
+
+{% endblock body %}

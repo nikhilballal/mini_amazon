@@ -1,5 +1,5 @@
 from flask import Flask,render_template,request,redirect,session, url_for, flash
-from model import check_user, create_user,log_user,check_product,create_product,get_products,seller_products,update_cart
+from model import check_user, create_user,log_user,check_product,create_product,get_products,seller_products,cart_page,update_cart
 app = Flask(__name__) # we are including all the properties of Flask into the app
 app.config['SECRET_KEY']='hello' #for session to work, we need secret_key
 
@@ -43,6 +43,8 @@ def signup():
         user_info['password'] = request.form['password']
         rpassword = request.form['rpassword']
         user_info['c_type'] = request.form['type']
+        if user_info['c_type'] == "buyer":
+            user_info['cart'] = []
 
 
 
@@ -82,7 +84,7 @@ def getprod():
     products = get_products()
     return render_template("products.html", products = products)
 
-@app.route("/yourproducts")
+@app.route("/sellerproducts")
 def yourproduct():
     prods = seller_products(session["username"])
     return render_template("products.html" , prods = prods )
@@ -91,8 +93,12 @@ def yourproduct():
 def add_cart():
     product_id = request.form['product_id']
     update_cart(session["username"], product_id)
-    return redirect(url_for('welcome'))
+    return redirect(url_for('cart'))
 
+@app.route('/cart')
+def cart():
+    products = cart_page(session['username'])
+    return render_template("cart_page.html", products=products)
 
 
 @app.route('/logout')

@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 client = MongoClient()
 db = client["mini_amazon"]
 
@@ -21,6 +22,7 @@ def log_user(username):
 
 def check_product(name):
 
+
     query = {"productsname": name}  # query is to check what is passed as productsname in the db
     results = db['products'].find(query) # return query and store the results pertaining to the query.
 
@@ -40,5 +42,20 @@ def seller_products(name):
     results = db['products'].find(query)
     return results
 
-def update_cart(username,product_id):
-    
+def update_cart(username, product_id):
+    db['users'].update({'username': username}, {"$addToSet": {"cart": {"$each": [product_id]}}})
+
+def cart_page(username):
+
+    query = {"username": username}
+    results = db["users"].find_one(query)
+    product_ids = results['cart']
+
+    products = []
+
+    for product_id in product_ids:
+        query = {"_id": ObjectId(product_id)}
+        results = db['products'].find_one(query)
+        products.append(results)
+
+    return products
