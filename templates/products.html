@@ -14,13 +14,13 @@
   <li><b> sold by </b> : {{ product["seller_name"]}}</li><br>
   <form action = "/add_cart" method = "POST">
   <input type = "hidden" name= "product_id" value="{{product['_id']}}">
-  <input type = "submit" name = "submit" value="buy">
+  <input type = "submit" name = "submit" value="Buy">
   </form>
   {% endfor %}
   {% else %}
   {% for prod in prods %}   <!--looping for seller products -->
   <ul>
-    <li> product name:  {{ prod["productsname"] }}</li>
+    <li> product name: {{ prod["productsname"] }}</li>
     <li> product description: {{ prod["description"] }}</li>
     <li> product cost: {{ prod["cost"] }}</li>
   </ul>

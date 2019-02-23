@@ -1,5 +1,5 @@
-from flask import Flask,render_template,request,redirect,session, url_for, flash
-from model import check_user, create_user,log_user,check_product,create_product,get_products,seller_products,cart_page,update_cart
+from flask import Flask,render_template,request,redirect,session, url_for,flash
+from model import check_user, create_user,log_user,check_product,create_product,get_products,seller_products,cart_page,update_cart,remove_from_cart
 app = Flask(__name__) # we are including all the properties of Flask into the app
 app.config['SECRET_KEY']='hello' #for session to work, we need secret_key
 
@@ -52,7 +52,7 @@ def signup():
             if rpassword == user_info['password']:
                 create_user(user_info) #we are passing the dictionary into the function 'create_user'
             else:
-                flash("passwords do not match , please provide correct password")
+                flash("passwords do not match, please provide correct password")
                 return render_template("register.html")
         else:
             return "user already exists"
@@ -87,7 +87,7 @@ def getprod():
 @app.route("/sellerproducts")
 def yourproduct():
     prods = seller_products(session["username"])
-    return render_template("products.html" , prods = prods )
+    return render_template("products.html" , prods = prods)
 
 @app.route('/add_cart', methods = ['POST'])
 def add_cart():
@@ -100,6 +100,12 @@ def cart():
     products = cart_page(session['username'])
     return render_template("cart_page.html", products=products)
 
+@app.route('/remove_cart', methods = ['POST'])
+def remove_cart():
+    product_id = str(request.form['product_id'])
+    remove_from_cart(session['username'],product_id)
+    return redirect(url_for('cart'))
+
 
 @app.route('/logout')
 def logout():
@@ -107,4 +113,4 @@ def logout():
     return redirect(url_for('home'))
 
 if(__name__) == '__main__':
-    app.run(debug="True")
+    app.run(debug= "True")

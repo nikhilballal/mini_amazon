@@ -42,20 +42,27 @@ def seller_products(name):
     results = db['products'].find(query)
     return results
 
-def update_cart(username, product_id):
+def update_cart(username, product_id): # when i press 'buy' the products.html.
     db['users'].update({'username': username}, {"$addToSet": {"cart": {"$each": [product_id]}}})
 
 def cart_page(username):
-
     query = {"username": username}
     results = db["users"].find_one(query)
     product_ids = results['cart']
 
-    products = []
+    if product_ids == None:
+        return "The cart is Empty"
 
-    for product_id in product_ids:
-        query = {"_id": ObjectId(product_id)}
-        results = db['products'].find_one(query)
-        products.append(results)
+    else:
+        products = []
+
+        for product_id in product_ids:
+            query = {"_id": ObjectId(product_id)}
+            results = db['products'].find_one(query)
+            products.append(results)
 
     return products
+
+
+def remove_from_cart(username,product_id):
+    db['users'].update({'username': username},{'$pull':{'cart': product_id}})
