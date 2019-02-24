@@ -50,16 +50,12 @@ def cart_page(username):
     results = db["users"].find_one(query)
     product_ids = results['cart']
 
-    if product_ids == None:
-        return "The cart is Empty"
 
-    else:
-        products = []
-
-        for product_id in product_ids:
-            query = {"_id": ObjectId(product_id)}
-            results = db['products'].find_one(query)
-            products.append(results)
+    products = []
+    for product_id in product_ids:
+        query = {"_id": ObjectId(product_id)}
+        results = db['products'].find_one(query)
+        products.append(results)
 
     return products
 
