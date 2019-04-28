@@ -16,14 +16,14 @@ def home():
 def welcome():
     return render_template('welcome.html')
 
-@app.route("/login", methods = ["GET","POST"]) #if 'get' is not mentioned wont allow page to go back to 'home'
+@app.route("/login", methods = ["GET","POST"]) #if 'get' is not mentioned won't allow page to go back to 'home'
 def login():
     if request.method == 'POST': # "POST" - typing it out on a form. "GET" clicking a link on the page or putting link on address bar.
         uname = request.form['username']
         password = request.form['password']
         result = log_user(uname) #result will store the username entered however will contain the info i.e username, password, custtype and email of the entry used in 'log_user'
 
-        if password==result['password']:
+        if password == result['password']:
             session['username'] = result['username']
             session['c_type'] = result['c_type']
             return redirect(url_for('welcome'))
@@ -96,6 +96,7 @@ def add_cart():
     return redirect(url_for('cart'))
 
 @app.route('/cart')
+
 def cart():
     products = cart_page(session['username'])
     return render_template("cart_page.html", products=products)
@@ -105,7 +106,6 @@ def remove_cart():
     product_id = str(request.form['product_id'])
     remove_from_cart(session['username'],product_id)
     return redirect(url_for('cart'))
-
 
 @app.route('/logout')
 def logout():
